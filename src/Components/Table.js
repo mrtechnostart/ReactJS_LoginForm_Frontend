@@ -4,17 +4,21 @@ import { Link } from "react-router-dom";
 import { useMoralis } from "react-moralis";
 const Table = () => {
   const [data, setData] = useState([]);
-  const {account,chainId:chainIdHex} = useMoralis()
-  const chainId = parseInt(chainIdHex)
+  const {account} = useMoralis()
+  const chainId = 11155111
   async function getData() {
     const dbData = await axios.get("http://localhost:4004/postdata/chainId/"+chainId);
     setData(dbData["data"]["tasks"]);
   }
   useEffect(() => {
     getData();
-  }, [chainId,account]);
+  }, [account]);
+  console.log(data)
   return (
-    <div className="table-responsive">
+    <>
+    {
+      data && (
+        <div className="table-responsive">
       <table class="table container">
         <thead class="thead-dark">
           <tr>
@@ -27,7 +31,7 @@ const Table = () => {
         <tbody>
           {data.map((element, index) => {
             return (
-              <>
+              <div key={element["_id"]}>
                 <tr>
                   <th scope="row">{index + 1}</th>
                   <td>{element["name"]}</td>
@@ -41,13 +45,16 @@ const Table = () => {
                   </td>
                       <td>{element["deployer"]}</td>
                 </tr>
-              </>
+              </div>
             );
           })}
         </tbody>
       </table>
     </div>
-  );
+      )  
+    }
+    </>
+      );
 };
 
 export default Table;

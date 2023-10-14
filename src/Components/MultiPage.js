@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const MultiPage = () => {
     const {addr} = useParams()    
-    const [contract,setContract ] = useState("0x0")
+    const [contract,setContract ] = useState(null)
 
     /* Currently Using Deployer Address, some bugs are faced as per contract Address */
     useEffect(()=>{
@@ -17,9 +17,15 @@ const MultiPage = () => {
         getData()
     })
   return (
+    <>
+    {
+      contract && (
     <div>
       <FundMe deployerAddress={contract}/>
     </div>
+      )  
+    }
+    </>
   )
 }
 
